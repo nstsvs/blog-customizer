@@ -46,6 +46,7 @@ export const ArticleParamsForm = ({ params, onSubmit }: ArticleParamsProps) => {
 
 	const handleReset = () => {
 		setFormState(defaultArticleState);
+		onSubmit(defaultArticleState);
 	};
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
