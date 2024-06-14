@@ -1,5 +1,6 @@
 .selectWrapper {
 	position: relative;
+	margin-top: 4px;
 }
 
 .container {
@@ -44,7 +45,7 @@
 
 .selectWrapper:not([data-is-active='true'])
 	.placeholder:not([data-status='invalid']):hover {
-	outline: 3px solid #000000;
+	outline: 1px solid #ffc802;
 }
 
 .select {
@@ -78,7 +79,7 @@
 }
 
 .option:hover {
-	background: var(--grey, #c4c4c4);
+	background: var(--grey, #eeeeee);
 }
 
 @mixin option-color-before {
