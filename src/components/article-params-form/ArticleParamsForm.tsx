@@ -1,12 +1,12 @@
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useClose } from 'components/article-params-form/hooks/useClose';
 import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
 import { Text } from 'components/text';
 import { Select } from 'components/select';
 import { Separator } from 'components/separator';
 import { RadioGroup } from 'components/radio-group';
-
 import {
 	fontFamilyOptions,
 	fontColors,
@@ -17,7 +17,6 @@ import {
 	ArticleStateType,
 	OptionType,
 } from 'src/constants/articleProps';
-
 import styles from './ArticleParamsForm.module.scss';
 
 type ArticleParamsProps = {
@@ -28,21 +27,14 @@ type ArticleParamsProps = {
 export const ArticleParamsForm = ({ params, onSubmit }: ArticleParamsProps) => {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [isOpen, setOpen] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [formState, setFormState] = useState<ArticleStateType>(params);
 
-	useEffect(() => {
-		const handleOutsideClick = (event: MouseEvent) => {
-			if (formRef.current && !formRef.current.contains(event.target as Node)) {
-				setOpen(false);
-			}
-		};
-
-		document.addEventListener('mousedown', handleOutsideClick);
-		return () => {
-			document.removeEventListener('mousedown', handleOutsideClick);
-		};
-	}, []);
+	useClose({
+		isOpen,
+		onClose: () => setIsOpen(false),
+		rootRef: formRef,
+	});
 
 	const handleReset = () => {
 		setFormState(defaultArticleState);
@@ -52,7 +44,7 @@ export const ArticleParamsForm = ({ params, onSubmit }: ArticleParamsProps) => {
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		onSubmit(formState);
-		setOpen(false);
+		setIsOpen(false);
 	};
 
 	const handleSelectChange =
@@ -65,7 +57,7 @@ export const ArticleParamsForm = ({ params, onSubmit }: ArticleParamsProps) => {
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} handleClick={() => setOpen(!isOpen)} />
+			<ArrowButton isOpen={isOpen} handleClick={() => setIsOpen(!isOpen)} />
 			<aside
 				className={clsx(styles.container, isOpen && styles.container_open)}>
 				<form className={styles.form} ref={formRef} onSubmit={handleSubmit}>
